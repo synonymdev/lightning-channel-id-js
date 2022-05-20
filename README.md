@@ -34,4 +34,12 @@ Converts from CLN to LND format.
 Accepts an optional `marker` string, which is used incase your channel format has a different seperator
 ```
 clnToLnd("734778x1235x0","x")
+
+{
+  block: '734778',
+  tx: '1235',
+  output: '0',
+  lnd_format: '807896954914930688',
+  cln_format: '734778x1235x0'
+}
 ```
