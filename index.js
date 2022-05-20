@@ -15,7 +15,7 @@ const long = require("long")
  * @param {string} marker The character seperating between the items.
  * @returns {Object}
  */
-function clnToLnd(chanId, marker){
+function fromCln(chanId, marker){
   if(typeof chanId !== "string") throw new Error("Channel id must be string")
   const chid = chanId.split(marker || ":")
   if(chid.length !== 3) throw new Error("Invalid channel id passed")
@@ -23,7 +23,7 @@ function clnToLnd(chanId, marker){
   const tx = long.fromString(chid[1]).shiftLeft(16)
   const output = chid[2]
   const lnd = block.or(tx).or(output)
-  const fmt = lndToCln(lnd.toString())
+  const fmt = fromLnd(lnd.toString())
   fmt.cln_format = chanId
   return fmt
 }
@@ -33,7 +33,7 @@ function clnToLnd(chanId, marker){
  * @param {String} chanId Channel id in LND notation (uint64 string)
  * @returns {Object}
  */
-function lndToCln(chanId){
+function fromLnd(chanId){
   const block = long.fromString(chanId).shiftRight(40)
   const tx = long.fromString(chanId).shiftRight(16).and(0xFFFFFF)
   const output = long.fromString(chanId).and(0xFFFF)
@@ -48,6 +48,6 @@ function lndToCln(chanId){
 
 
 module.exports = {
-  clnToLnd,
-  lndToCln,
+  fromCln,
+  fromLnd,
 }
