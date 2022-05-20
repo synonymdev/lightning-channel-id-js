@@ -5,7 +5,7 @@ Convert between various channel id formats in Lightning network.
 
 ```js
 
-npm install lightning-channel-js
+npm install @synonymdev/lightning-channel-id
 
 const {clnToLnd, lndToCln} = require("lightning-channel-js")
 
