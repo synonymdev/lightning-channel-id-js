@@ -1,6 +1,6 @@
 {
   "name": "@synonymdev/lightning-channel-id",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Convert lightning channel id formats",
   "main": "index.js",
   "scripts": {
