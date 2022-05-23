@@ -15,15 +15,14 @@ const long = require("long")
  * @param {string} marker The character seperating between the items.
  * @returns {Object}
  */
-function clnToLnd(chanId, marker){
-  if(typeof chanId !== "string") throw new Error("Channel id must be string")
-  const chid = chanId.split(marker || ":")
+function fromCLN(chanId, marker){
+  const chid = chanId.split(marker)
   if(chid.length !== 3) throw new Error("Invalid channel id passed")
   const block = long.fromString(chid[0]).shiftLeft(40)
   const tx = long.fromString(chid[1]).shiftLeft(16)
   const output = chid[2]
   const lnd = block.or(tx).or(output)
-  const fmt = lndToCln(lnd.toString())
+  const fmt = fromLND(lnd.toString())
   fmt.cln_format = chanId
   return fmt
 }
@@ -33,7 +32,7 @@ function clnToLnd(chanId, marker){
  * @param {String} chanId Channel id in LND notation (uint64 string)
  * @returns {Object}
  */
-function lndToCln(chanId){
+function fromLND(chanId){
   const block = long.fromString(chanId).shiftRight(40)
   const tx = long.fromString(chanId).shiftRight(16).and(0xFFFFFF)
   const output = long.fromString(chanId).and(0xFFFF)
@@ -47,7 +46,19 @@ function lndToCln(chanId){
 }
 
 
-module.exports = {
-  clnToLnd,
-  lndToCln,
+function parseChannelId (chanId, marker){
+  if(typeof chanId !== "string") throw new Error("Invalid chan id")
+  chanId = chanId.toLowerCase()
+  if(chanId.includes("x")){
+    marker = "x"
+  }
+  if(chanId.includes(":")){
+    marker = ":"
+  }
+  if(!marker) return fromLND(chanId)
+  return fromCLN(chanId, marker)
+
+
 }
+
+module.exports = parseChannelId
