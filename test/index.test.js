@@ -1,12 +1,13 @@
 /* eslint-env mocha */
 'use strict'
 const assert = require('assert')
-const {clnToLnd, lndToCln} = require("../index")
+const parseChannelId = require("../index")
 
 describe('Channel format converter', () => {
 
   it("should convert CLN format to LND format",()=>{
-      const scid = clnToLnd("734778:1235:0")
+      const scid = parseChannelId("734778:1235:0")
+      console.log(scid)
       assert(scid.lnd_format === "807896954914930688")
       assert(scid.tx === "1235")
       assert(scid.block ==="734778")
@@ -16,7 +17,7 @@ describe('Channel format converter', () => {
 
   it("should convert CLN format with a marker to LND format",()=>{
 
-    const scid = clnToLnd("734778x1235x0","x")
+    const scid = parseChannelId("734778x1235x0")
     assert(scid.lnd_format === "807896954914930688")
     assert(scid.tx === "1235")
     assert(scid.block === "734778")
@@ -25,7 +26,7 @@ describe('Channel format converter', () => {
   })
 
   it("should convert LND format to CLN format",()=>{
-    const scid = lndToCln("770826920361984001")
+    const scid = parseChannelId("770826920361984001")
     assert(scid.lnd_format === "770826920361984001")
     assert(scid.tx === "892")
     assert(scid.block === "701063")

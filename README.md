@@ -7,10 +7,12 @@ Convert between various channel id formats in Lightning network.
 
 npm install @synonymdev/lightning-channel-id
 
-const {clnToLnd, lndToCln} = require("lightning-channel-js")
+const parseChannelId = require("lightning-channel-js")
 
-lndToCln("807896954914930688")
-clnToLnd("734778:1235:0")
+parseChannelId("807896954914930688") // long channel id format
+parseChannelId("734778:1235:0") // : seperated
+parseChannelId("734778x1235x0") // x seperated 
+parseChannelId("734778$1235$0","$) // custom marker
 
 // All of the above should output same result
 {
@@ -22,24 +24,3 @@ clnToLnd("734778:1235:0")
 }
 
 
-```
-
-### Functions
-
-### `lndToCln(channelId : String)`
-Converts from LND format to CLN format
-
-### `clnToLnd(channelId : String, marker: String)`
-Converts from CLN to LND format. 
-Accepts an optional `marker` string, which is used incase your channel format has a different seperator
-```
-clnToLnd("734778x1235x0","x")
-
-{
-  block: '734778',
-  tx: '1235',
-  output: '0',
-  lnd_format: '807896954914930688',
-  cln_format: '734778x1235x0'
-}
-```
